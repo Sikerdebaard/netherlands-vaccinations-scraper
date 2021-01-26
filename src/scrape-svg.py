@@ -106,7 +106,7 @@ def linecastlegend(img, y):
     counter = 0
     for label in legend_labels:
         img_label = img[y_low-oldpixel_to_newpixel(img, x=5):y_high+oldpixel_to_newpixel(img, x=5), label['x_left']-oldpixel_to_newpixel(img, x=5):label['x_right']+oldpixel_to_newpixel(img, x=5)]
-        cv2.imwrite(f'test_label{counter}.png', img_label)
+        #cv2.imwrite(f'test_label{counter}.png', img_label)
         text = pytesseract.image_to_string(img_label)
         label['text'] = text.strip()
         counter+=1
@@ -145,7 +145,7 @@ img_test = img.copy()
 for x in range(0, img.shape[1]):
     img_test[barchart['y_barchart_start'], x] = 0
 
-cv2.imwrite('test_img_test.png', img_test)
+#cv2.imwrite('test_img_test.png', img_test)
 
 print(barchart['y_barchart_start'])
 barchart['bars'] = []
