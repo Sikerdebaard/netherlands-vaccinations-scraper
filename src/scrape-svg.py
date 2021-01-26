@@ -196,10 +196,10 @@ df_lines['value'] = df_lines['value'].astype(int)
 
 df_lines['real_value'] = df_lines['value'].apply(lambda x: eval(f'{x} {scale}'))
 
-avg_pixels_per_line = abs(df_lines['y_middle'].diff().mean())
+avg_pixels_per_line = int(abs(df_lines['y_middle'].diff().mean()))
 mean_value_per_line = int(df_lines['real_value'].diff().mean())
 
-mean_value_per_pixel = mean_value_per_line / avg_pixels_per_line
+mean_value_per_pixel = int(mean_value_per_line / avg_pixels_per_line)
 
 
 import re
@@ -235,11 +235,13 @@ for bar in barchart['bars']:
 
 df_bar_labels = df[(df['top'] > barchart['y_barchart_start']) & (df['top'] < min([x['y_low'] for x in legend]) - 10)]
 
+print(mean_value_per_pixel)
 for bar in barchart['bars']:
     for k, v in bar['parts'].items():
         part = bar['parts'][k]
         part['pixels'] = part['y_start'] - part['y_end']
-        part['estimated_value'] = part['pixels'] * mean_value_per_pixel
+        part['estimated_value'] = (part['pixels']) * ean_value_per_pixel
+        print(part['pixels'])
 
     x = bar['x_middle']
 
@@ -295,8 +297,8 @@ def specialround(x):
     return base * round(x/base)
 
 
-for col in df_vaccines.columns:
-    df_vaccines[col] = df_vaccines[col].apply(specialround)
+#for col in df_vaccines.columns:
+#    df_vaccines[col] = df_vaccines[col].apply(specialround)
 
 
 
