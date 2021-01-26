@@ -17,6 +17,6 @@ Every column name is an instance as reported by the dashboard. The column names 
 
 ## vaccine-doses-deliveries-by-vaccine.csv
 `year-week` the year and isoweek when the delivery should take place  
-`sum` the sum of all manufacturers in that specific row  
+`sum` the sum of all the expected doses that are to be delivered in that specific week for all manufacturers  
 `cumulative` the cumulative total  
-All other columns are names of manufacturers.
+All other columns are names of manufacturers and show the number of vaccine doses that are expected to be delivered in that specific week.
