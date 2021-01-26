@@ -2,3 +2,15 @@
 
 # netherlands-vaccinations-scraper
 Vaccination data as scraped from https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
+
+## people-vaccinated.csv
+`date` iso datestamp when the row was published.  
+`total_vaccinations` total vaccination doses administered.
+
+## people-vaccinated-by-instance.csv
+`date` iso datestamp when the row was published.
+Every column name is an instance as reported by the dashboard. The column names might change over time as we add or remove mappings.
+
+## expected-doses-delivered-within-six-weeks.csv
+`date` iso datestamp when the row was published.  
+`expected_deliveries_within_six_weeks` the number of doses that are expected to be delivered to the Netherlands within six weeks.
