@@ -18,11 +18,24 @@ for article in soup.find_all('article'):
 
 
 
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF, renderPM
+from cairosvg import svg2png
+import cv2
 
-drawing = svg2rlg(svgfile)
-renderPM.drawToFile(drawing, pngfile, fmt="PNG")
+svg2png(open(svgfile, 'rb').read(), write_to=open(pngfile, 'wb'), dpi=300, scale=10)
+
+
+org_img = cv2.imread(pngfile, cv2.IMREAD_UNCHANGED)
+
+#make mask of where the transparent bits are
+trans_mask = org_img[..., 3] == 0
+
+#replace areas of transparency with white and not transparent
+org_img[trans_mask] = [255, 255, 255, 255]
+
+org_img = org_img[..., :3]
+
+cv2.imwrite(pngfile, org_img)
+
 
 import numpy as np
 import cv2
@@ -31,6 +44,14 @@ org_img = cv2.imread(pngfile)
 
 
 import pytesseract
+
+def oldpixel_to_newpixel(img, x=None, y=None):
+    if x and y:
+        return int(y / 400 * img.shape[0]), int(x / 800 * img.shape[1]) 
+    elif x:
+        return int(x / 800 * img.shape[1])
+    elif y:
+        return int(y / 400 * img.shape[0])
 
 def linecastlegend(img, y):
     color = 0
@@ -43,7 +64,7 @@ def linecastlegend(img, y):
         if img[y, x].sum() != 765:
             white_pixel_counter = 0
             if indicator == 0:
-                current_label['label_color'] = img[y, x+3]
+                current_label['label_color'] = img[y, x+ oldpixel_to_newpixel(img, x=3)]
                 indicator = 1
             elif indicator == 2:
                 if 'x_left' not in current_label:
@@ -71,7 +92,7 @@ def linecastlegend(img, y):
         if img[y, x].sum() == 765 and indicator == 2:
             white_pixel_counter += 1
 
-            if white_pixel_counter > 25:
+            if white_pixel_counter > oldpixel_to_newpixel(img, x=25):
                 white_pixel_counter = 0
                 legend_labels.append(current_label)
                 current_label = {}
@@ -79,28 +100,31 @@ def linecastlegend(img, y):
 
         if img[y, x].sum() == 765 and indicator == 1:
             indicator = 2
-
-
+        
+    from pprint import pprint
+    pprint(legend_labels)
     counter = 0
     for label in legend_labels:
-        img_label = img[y_low-5:y_high+5, label['x_left']-5:label['x_right']+5]
+        img_label = img[y_low-oldpixel_to_newpixel(img, x=5):y_high+oldpixel_to_newpixel(img, x=5), label['x_left']-oldpixel_to_newpixel(img, x=5):label['x_right']+oldpixel_to_newpixel(img, x=5)]
+        cv2.imwrite(f'test_label{counter}.png', img_label)
         text = pytesseract.image_to_string(img_label)
         label['text'] = text.strip()
         counter+=1
-
+    
     return legend_labels
+    
 
-legend = 374
 img = org_img.copy()
-
+legend = oldpixel_to_newpixel(img, x=370)
+print(legend)
 
 legend = linecastlegend(img, legend)
-
+legend
 
 import pandas as pd
 
-y = 300
-x = 795
+y = oldpixel_to_newpixel(img, y=300)
+x = oldpixel_to_newpixel(img, x=795)
 
 img = org_img.copy()
 
@@ -108,12 +132,26 @@ barchart = {}
 
 while img[y, x].sum() == 765:
     y += 1
-    
-barchart['y_barchart_start'] = y
+
+barchart['y_bottom_line_top'] = y
+
+while img[y, x].sum() != 765:
+    y += 1
+
+barchart['y_barchart_start'] = y - 1
+
+img_test = img.copy()
+
+for x in range(0, img.shape[1]):
+    img_test[barchart['y_barchart_start'], x] = 0
+
+cv2.imwrite('test_img_test.png', img_test)
+
+print(barchart['y_barchart_start'])
 barchart['bars'] = []
 
-y -= 2
-x = 30
+y = barchart['y_bottom_line_top'] - 5
+x = oldpixel_to_newpixel(img, x=30)
 bar = {}
 indicator = 0
 for x in range(x, img.shape[1]):
@@ -126,11 +164,11 @@ for x in range(x, img.shape[1]):
         bar['x_middle'] = bar['x_left'] + (bar['x_right'] - bar['x_left']) // 2
         barchart['bars'].append(bar)
         bar = {}
-        
+
 indicator = 0
 line = {}
 barchart['lines'] = []
-x = 795
+x = oldpixel_to_newpixel(img, x=795)
 for y in range(barchart['y_barchart_start'] + 1, -1, -1):
     if img[y, x].sum() != 765 and indicator == 0:
         indicator = 1
@@ -141,10 +179,12 @@ for y in range(barchart['y_barchart_start'] + 1, -1, -1):
         line['y_middle'] = line['y_top'] + ((line['y_bottom'] - line['y_top']) // 2)
         barchart['lines'].append(line)
         line = {}
-        
-    
-from pytesseract import Output
 
+
+barchart
+
+from pytesseract import Output
+import re
 
 
 d = pytesseract.image_to_data(img, output_type=Output.DICT)
@@ -152,37 +192,41 @@ n_boxes = len(d['level'])
 rows = []
 for i in range(n_boxes):
     row = [d['left'][i], d['top'][i], d['width'][i], d['height'][i], d['text'][i]]
-    
+
     area = row[2] * row[3]
     area_perc = area / np.prod(img.shape[:2])
-    
+
     row.append(area)
     row.append(area_perc)
-    
+
     rows.append(row)
 
 df = pd.DataFrame(rows)
 df.columns = ['left', 'top', 'width', 'height', 'text', 'area', 'area_perc_total']
 
-df_scale = df[df['top'] < 30]
+df_scale = df[df['top'] < oldpixel_to_newpixel(img, y=29)]
 scale = ' '.join([x for x in df_scale['text'].values if x != ''])
 scale = scale.replace('x', '*').replace('.', '')
 
 if '*' not in scale:
     raise SystemExit('Something changed')
 
-df_bars = df[(df['left'] + df['width'] < barchart['y_barchart_start'] - 1) & (~df.index.isin(df_scale.index))]
+df_bars = df[(df['left'] + df['width'] < barchart['y_barchart_start'] - oldpixel_to_newpixel(img, x=1)) & (~df.index.isin(df_scale.index))]
 
 for line in barchart['lines']:
     y = line['y_middle']
-    
+
     text = ' '.join([x for x in df_bars.iloc[(df_bars['top']-y).abs().argsort()[:2]]['text'].values if x != ''])
+    text = re.sub("[^0-9]", "", text)
     if text.strip() != '':
         line['value'] = text
-        
+
 
 df_lines = pd.DataFrame(barchart['lines'])
 df_lines = df_lines.sort_values('y_top', ascending=False)
+
+print(df_lines)
+
 mean_increment = df_lines['value'].dropna().astype(int).diff().dropna().mean()
 
 df_lines.at[0, 'value'] = 0
@@ -196,11 +240,12 @@ df_lines['value'] = df_lines['value'].astype(int)
 
 df_lines['real_value'] = df_lines['value'].apply(lambda x: eval(f'{x} {scale}'))
 
-avg_pixels_per_line = int(abs(df_lines['y_middle'].diff().mean()))
-mean_value_per_line = int(df_lines['real_value'].diff().mean())
+avg_pixels_per_line = abs(df_lines['y_middle'].diff().mean())
+mean_value_per_line = df_lines['real_value'].diff().mean()
 
-mean_value_per_pixel = int(mean_value_per_line / avg_pixels_per_line)
-
+mean_value_per_pixel = mean_value_per_line / avg_pixels_per_line
+mean_value_per_pixel
+#barchart
 
 import re
 
@@ -227,7 +272,7 @@ for bar in barchart['bars']:
         img_view[y, x] = 0
         y -= 1
 
-    if vaccine:
+    if part:
         part['y_end'] = y-1
         bar['parts'][vaccine] = part
 
@@ -235,13 +280,11 @@ for bar in barchart['bars']:
 
 df_bar_labels = df[(df['top'] > barchart['y_barchart_start']) & (df['top'] < min([x['y_low'] for x in legend]) - 10)]
 
-print(mean_value_per_pixel)
 for bar in barchart['bars']:
     for k, v in bar['parts'].items():
         part = bar['parts'][k]
         part['pixels'] = part['y_start'] - part['y_end']
-        part['estimated_value'] = (part['pixels']) * ean_value_per_pixel
-        print(part['pixels'])
+        part['estimated_value'] = (part['pixels']-1) * mean_value_per_pixel
 
     x = bar['x_middle']
 
@@ -261,7 +304,9 @@ for bar in barchart['bars']:
         if 'week' in bar_timestamp and 'year' in bar_timestamp:
             break
 
-    bar['label'] = f"{bar_timestamp['year']}-{bar_timestamp['week']:02d}"
+    bar['label'] = f"{bar_timestamp['year']}-{bar_timestamp['week']}"
+
+barchart
 
 
 vaccines = [x['text'] for x in legend]
@@ -273,36 +318,12 @@ for bar in barchart['bars']:
     
 df_vaccines = pd.DataFrame(numvaccines)
 df_vaccines = df_vaccines.set_index('year-week')
+df_vaccines['total'] = df_vaccines.sum(axis=1)
 
 df_vaccines = df_vaccines.sort_index().round(0).fillna(0).astype(int)
 
-def specialround(x):
-    if x >= 100_000_000:
-        base = 50_000_000
-    elif x >= 10_000_000:
-        base = 5_000_000
-    elif x >= 1_000_000:
-        base = 500_000
-    elif x >= 100_000:
-        base = 50_000
-    elif x >= 10_000:
-        base = 5_000
-    elif x >= 1_000:
-        base = 500
-    elif x >= 100:
-        base = 50
-    else:
-        base = 5
-    
-    return base * round(x/base)
-
-
-#for col in df_vaccines.columns:
-#    df_vaccines[col] = df_vaccines[col].apply(specialround)
-
-
-
 df_vaccines['sum'] = df_vaccines.sum(axis=1)
+
 from pathlib import Path
 csv_out = Path('vaccine-doses-deliveries-by-vaccine.csv')
 
