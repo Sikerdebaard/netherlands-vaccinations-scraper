@@ -259,7 +259,7 @@ for bar in barchart['bars']:
         if 'week' in bar_timestamp and 'year' in bar_timestamp:
             break
 
-    bar['label'] = f"{bar_timestamp['year']}-{bar_timestamp['week']}"
+    bar['label'] = f"{bar_timestamp['year']}-{bar_timestamp['week']:02d}"
 
 
 vaccines = [x['text'] for x in legend]
