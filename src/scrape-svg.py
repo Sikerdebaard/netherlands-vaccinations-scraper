@@ -271,10 +271,36 @@ for bar in barchart['bars']:
     
 df_vaccines = pd.DataFrame(numvaccines)
 df_vaccines = df_vaccines.set_index('year-week')
-df_vaccines['sum'] = df_vaccines.sum(axis=1)
 
 df_vaccines = df_vaccines.sort_index().round(0).fillna(0).astype(int)
 
+def specialround(x):
+    if x >= 100_000_000:
+        base = 50_000_000
+    elif x >= 10_000_000:
+        base = 5_000_000
+    elif x >= 1_000_000:
+        base = 500_000
+    elif x >= 100_000:
+        base = 50_000
+    elif x >= 10_000:
+        base = 5_000
+    elif x >= 1_000:
+        base = 500
+    elif x >= 100:
+        base = 50
+    else:
+        base = 5
+    
+    return base * round(x/base)
+
+
+for col in df_vaccines.columns:
+    df_vaccines[col] = df_vaccines[col].apply(specialround)
+
+
+
+df_vaccines['sum'] = df_vaccines.sum(axis=1)
 from pathlib import Path
 csv_out = Path('vaccine-doses-deliveries-by-vaccine.csv')
 
