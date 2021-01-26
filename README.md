@@ -14,3 +14,9 @@ Every column name is an instance as reported by the dashboard. The column names 
 ## expected-doses-delivered-within-six-weeks.csv
 `date` iso datestamp when the row was published.  
 `expected_deliveries_within_six_weeks` the number of doses that are expected to be delivered to the Netherlands within six weeks.
+
+## vaccine-doses-deliveries-by-vaccine.csv
+`year-week` the year and isoweek when the delivery should take place  
+`sum` the sum of all manufacturers in that specific row  
+`cumulative` the cumulative total  
+All other columns are names of manufacturers.
