@@ -29,9 +29,9 @@ def dict_to_csv(d, file):
         df_org.index = pd.to_datetime(df_org.index)
         
         for idx, row in df.iterrows():
-            if idx in df_org.index:
-                for col in df.columns:
-                    df_org.at[idx, col] = row[col]
+            #if idx in df_org.index:
+            for col in df.columns:
+                df_org.at[idx, col] = row[col]
                     
         df = df_org
     
