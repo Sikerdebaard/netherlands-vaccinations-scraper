@@ -36,6 +36,7 @@ def dict_to_csv(d, file):
         df = df_org
     
     df.sort_index(inplace=True)
+    df = df.astype(int)
     df.to_csv(file)
 
 def parse_administered_doses(el):
