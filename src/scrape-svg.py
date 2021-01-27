@@ -318,7 +318,6 @@ for bar in barchart['bars']:
     
 df_vaccines = pd.DataFrame(numvaccines)
 df_vaccines = df_vaccines.set_index('year-week')
-df_vaccines['total'] = df_vaccines.sum(axis=1)
 
 df_vaccines = df_vaccines.sort_index().round(0).fillna(0).astype(int)
 
