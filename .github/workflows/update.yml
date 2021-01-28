@@ -26,7 +26,8 @@ jobs:
     - name: Scrape
       run: |
         python src/scrape.py
-        python src/scrape-svg.py
+        #python src/scrape-svg.py
+        python src/scrape-json.py
     - name: Commit files
       run: |
           git config --local user.email "thomas@tphil.nl"
