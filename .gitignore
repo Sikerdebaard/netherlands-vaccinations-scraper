@@ -1,4 +1,5 @@
 html/*.csv
+triggers/*
 html/*.json
 html/*.html
 .idea
