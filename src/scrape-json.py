@@ -7,6 +7,7 @@ df = pd.DataFrame(data['vaccine_delivery']['values'])
 for col in df.columns:
     if 'date' in col:
         df[col.replace('_unix', '')] = pd.to_datetime(df[col], unit='s')
+        df.drop(columns=col, inplace=True)
     else:
         df[col] = df[col].astype(int)
         
