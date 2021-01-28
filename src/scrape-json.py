@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 
 data = requests.get('https://coronadashboard.rijksoverheid.nl/json/NL.json').json()
@@ -13,3 +14,4 @@ for col in df.columns:
 df['year-week'] = df['date_start_unix'].dt.strftime('%G-%V')
 df = df.set_index('year-week')
 df.to_csv('vaccine-dose-deliveries-by-manufacturer.csv')
+
