@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime, date
 from pathlib import Path
+import numpy as np
 
 
 
@@ -16,14 +17,13 @@ def dict_to_csv(d, file):
         df_org.index = pd.to_datetime(df_org.index)
         
         for idx, row in df.iterrows():
-            #if idx in df_org.index:
             for col in df.columns:
                 df_org.at[idx, col] = row[col]
                     
         df = df_org
     
     df.sort_index(inplace=True)
-    df = df.astype(int)
+    df = df.fillna(0).astype(int)
     df.to_csv(file)
     
 
@@ -37,7 +37,7 @@ def parse_expected_delivery_vaccins(data):
     data_delv['date'] = date
     
     print(data_delv)
-    dict_to_csv(data, 'expected-doses-delivered-within-six-weeks.csv')
+    dict_to_csv(data_delv, 'expected-doses-delivered-within-six-weeks.csv')
 
 
 def parse_administered_doses(data):
@@ -50,6 +50,7 @@ def parse_administered_doses(data):
     date = dateparser.parse(date)
     
     data_doses['date'] = date
+    data_doses_by_administering_instance['date'] = date
     
     for administered in data["vaccinaties"]["data"]['kpi_total']['administered']:
         if administered['value'].strip() == '':
