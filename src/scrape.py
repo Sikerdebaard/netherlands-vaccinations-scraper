@@ -1,23 +1,10 @@
-import re
-import json
 import dateparser
 import requests
 import pandas as pd
 from datetime import datetime, date
 from pathlib import Path
-from bs4 import BeautifulSoup
 
 
-baseurl = 'https://coronadashboard.rijksoverheid.nl'
-page = requests.get(baseurl + '/landelijk/vaccinaties')
-soup = BeautifulSoup(page.text, 'html.parser')
-
-
-administered_by_mapper = {
-    "ggd'en": 'GGD',
-    'ziekenhuizen': 'Hospitals',
-    'langdurige zorginstellingen': 'Long-term Care Facilities',
-}
 
 def dict_to_csv(d, file):
     df = pd.DataFrame(d, index=[0])
@@ -38,64 +25,45 @@ def dict_to_csv(d, file):
     df.sort_index(inplace=True)
     df = df.astype(int)
     df.to_csv(file)
+    
 
-def parse_administered_doses(el):
+def parse_expected_delivery_vaccins(data):
+    data_delv = {}
+    
+    data_delv['expected_deliveries_within_six_weeks'] = int(data["vaccinaties"]["data"]['kpi_expected_delivery']['value'])
+    
+    date = data["vaccinaties"]["data"]['kpi_expected_delivery']['date_of_report_unix']
+    date = dateparser.parse(date)
+    data_delv['date'] = date
+    
+    print(data_delv)
+    dict_to_csv(data, 'expected-doses-delivered-within-six-weeks.csv')
+
+
+def parse_administered_doses(data):
     data_doses = {}
     data_doses_by_administering_instance = {}
+        
+    data_doses['total_vaccinations'] = int(data["vaccinaties"]["data"]["sidebar"]["last_value"]["total_vaccinated"])
     
-    data_doses['total_vaccinations'] = int(el.select('[class*="kpi-value_"]')[0].text.replace('.', ''))
+    date = data["vaccinaties"]["data"]["sidebar"]["last_value"]["date_unix"]
+    date = dateparser.parse(date)
     
-    for h4 in el.find_all('h4'):
-        if 'toegediend door' in h4.text:
-            amount = int(h4.find('span').text.replace('.', ''))
-            administered_by = h4.text.split('toegediend door')[1].strip().rstrip('*')
-            
-            if administered_by.lower() in administered_by_mapper:
-                administered_by = administered_by_mapper[administered_by.lower()]
-            
-            data_doses_by_administering_instance[administered_by] = amount
-            
-    for p in el.find_all('p'):
-        if 'Waarde van' in p.text:
-            date = ' '.join(p.text.split('van', 1)[1].strip().split(' ')[:3])
-            date = dateparser.parse(date, languages=["nl"]).date()
-            data_doses_by_administering_instance['date'] = date
-            data_doses['date'] = date
+    data_doses['date'] = date
     
+    for administered in data["vaccinaties"]["data"]['kpi_total']['administered']:
+        if administered['value'].strip() == '':
+            continue
+        administered_by = administered['description'].replace('administered by', '').strip().strip('*')
+        amount = int(administered['value'])
+        data_doses_by_administering_instance[administered_by] = amount
+    
+    print(data_doses)
+    print(data_doses_by_administering_instance)
     dict_to_csv(data_doses, 'people-vaccinated.csv')
     dict_to_csv(data_doses_by_administering_instance, 'people-vaccinated-by-instance.csv')
     
-
-def parse_expected_delivery_vaccins(el):
-    data = {}
     
-    data['expected_deliveries_within_six_weeks'] = int(el.select('[class*="kpi-value_"]')[0].text.replace('.', ''))
-    
-    for p in el.find_all('p'):
-        if 'Waarde van' in p.text:
-            date = ' '.join(p.text.split('van', 1)[1].strip().split(' ')[:3])
-            date = dateparser.parse(date, languages=["nl"]).date()
-            data['date'] = date
-    
-    dict_to_csv(data, 'expected-doses-delivered-within-six-weeks.csv')
-
-def parse_expected_deliveries_per_week(el):
-    return {}
-
-
-mapper = {
-    'Aantal toegediende vaccins': parse_administered_doses,
-    'Verwachte levering goedgekeurde vaccins': parse_expected_delivery_vaccins,
-    #'Verwachte leveringen per week': parse_expected_deliveries_per_week,
-}
-
-for p in soup.find_all('p'):
-    if 'Laatste waardes verkregen op' in p.text:
-        date = ' '.join(p.text.split('.')[0].split('op')[1].strip().split(' ')[:3])
-        date = dateparser.parse(date, languages=["nl"]).date()
-        
-for article in soup.find_all('article'):
-    for h3 in article.find_all('h3'):
-        key = h3.text.strip()
-        if key in mapper:
-            mapper[key](article)
+data = requests.get('https://raw.githubusercontent.com/minvws/nl-covid19-data-dashboard/develop/packages/app/src/locale/en.json').json()
+parse_administered_doses(data)
+parse_expected_delivery_vaccins(data)
