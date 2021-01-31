@@ -8,10 +8,19 @@ Vaccination data as scraped from https://coronadashboard.rijksoverheid.nl/landel
 `date` iso datestamp when the row was published.  
 `total_vaccinations` total vaccination doses administered.
 
+## estimated-people-vaccinated.csv
+`date` iso datestamp when the row was published  
+`total_vaccinations` total vaccination doses administered as estimated by a mathematical model from the RIVM  
+
 ## people-vaccinated-by-instance.csv
 `date` iso datestamp when the row was published.  
 
-Every column name is an organisation involved in the vaccination process as reported by the dashboard. The column names might change over time as we add or remove mappings.
+Every column name is an organisation involved in the vaccination process as reported by the dashboard. The column names might change over time as we add or remove mappings.  
+
+## estimated-people-vaccinated-by-instance.csv
+`date` iso datestamp when the row was published  
+
+Every column name is an organisation involved in the vaccination process as reported by the mathematical model from the RIVM. The column names might change over time as we add or remove mappings.  
 
 ## expected-doses-delivered-within-six-weeks.csv
 `date` iso datestamp when the row was published.  
