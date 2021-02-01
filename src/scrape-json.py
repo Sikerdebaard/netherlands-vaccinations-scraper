@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from pathlib import Path
 
 
 data = requests.get('https://coronadashboard.rijksoverheid.nl/json/NL.json').json()
@@ -11,8 +12,20 @@ for col in df.columns:
     else:
         df[col] = df[col].astype(int)
         
-#df = df.set_index('date_start_unix')
 df['year-week'] = df['date_start'].dt.strftime('%G-%V')
 df = df.set_index('year-week')
+
+outfile = Path('vaccine-dose-deliveries-by-manufacturer.csv')
+
+if outfile.exists():
+    df_org = pd.read_csv(outfile, index_col=0)
+
+    for idx, row in df.iterrows():
+        for col in df.columns:
+            df_org.at[idx, col] = row[col]
+
+    df = df_org
+
+
 df.to_csv('vaccine-dose-deliveries-by-manufacturer.csv')
 
