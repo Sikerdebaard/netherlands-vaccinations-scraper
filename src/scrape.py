@@ -55,7 +55,16 @@ def parse_administered_doses(data):
     for administered in data["vaccinaties"]["data"]['kpi_total']['administered']:
         if administered['value'].strip() == '':
             continue
-        administered_by = administered['description'].replace('administered by', '').strip().strip('*')
+        administered_by = administered['description']
+
+        for rep in remove_map:
+            administered_by = administered_by.replace(rep, '')
+            
+        administered_by = administered_by.strip().strip('*')
+
+        if administered_by in admby_mapper:
+            administered_by = admby_mapper[administered_by]
+
         amount = int(administered['value'])
         data_doses_by_administering_instance[administered_by] = amount
 
@@ -66,7 +75,15 @@ def parse_administered_doses(data):
     
 admby_mapper = {
     'gezet door GGD\'en': 'municipal health services (GGDs)',
+    'GGD-GHOR': 'municipal health services (GGDs)',
+    'LNAZ': 'hospitals',
+    'GGDs': 'municipal health services (GGDs)',
 }
+remove_map = [
+    'administered by',
+    'reported by',
+    'administered in',
+]
     
 def parse_estimates(data):
     data_doses = {}
@@ -83,7 +100,12 @@ def parse_estimates(data):
     for administered in data["vaccinaties"]["data"]['kpi_total']['tab_total_estimated']['administered']:
         if administered['value'].strip() == '':
             continue
-        administered_by = administered['description'].replace('administered by', '').strip().strip('*')
+        administered_by = administered['description']
+        
+        for rep in remove_map:
+            administered_by = administered_by.replace(rep, '')
+            
+        administered_by = administered_by.strip().strip('*')
         
         if administered_by in admby_mapper:
             administered_by = admby_mapper[administered_by]
