@@ -1,2 +1,3 @@
-date,municipal health services (GGDs),hospitals,long-term care institutions
-2021-01-31,176286,81088,89416
+date,municipal health services (GGDs),hospitals,long-term care institutions,GGDs,administered in hospitals,administered in long-term care institutions
+2021-01-31,176286,81088,89416,0,0,0
+2021-02-01,0,0,0,187339,60716,95826
