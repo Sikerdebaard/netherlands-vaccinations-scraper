@@ -39,19 +39,18 @@ df.to_csv(outfile)
 
 ## VACCINE SUPPORT ##
 
-df_support = pd.DataFrame(data['vaccine_support']['values'])
-df_support['date'] = pd.to_datetime(df_support['date_start_unix'], unit='s')
-df_support.set_index('date', inplace=True)
-df_support.sort_index(inplace=True)
-df_support.index = df_support.index.strftime('%G-%V')
-df_support.index.rename('year-week', inplace=True)
+if 'vaccine_support' in data:
+    df_support = pd.DataFrame(data['vaccine_support']['values'])
+    df_support['date'] = pd.to_datetime(df_support['date_start_unix'], unit='s')
+    df_support.set_index('date', inplace=True)
+    df_support.sort_index(inplace=True)
+    df_support.index = df_support.index.strftime('%G-%V')
+    df_support.index.rename('year-week', inplace=True)
 
 
-outfile = Path('vaccine-support.csv')
+    outfile = Path('vaccine-support.csv')
 
-if outfile.exists():
-    df_support = deepupdate(df_support)
+    if outfile.exists():
+        df_support = deepupdate(df_support)
 
-
-
-df_support.to_csv(outfile)
+    df_support.to_csv(outfile)
