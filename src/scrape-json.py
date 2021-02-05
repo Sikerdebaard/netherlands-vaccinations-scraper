@@ -29,3 +29,12 @@ if outfile.exists():
 
 df.to_csv('vaccine-dose-deliveries-by-manufacturer.csv')
 
+
+df_support = pd.DataFrame(data['vaccine_support']['values'])
+df_support['date'] = pd.to_datetime(df_support['date_start_unix'], unit='s')
+df_support.set_index('date', inplace=True)
+df_support.sort_index(inplace=True)
+df_support.index = df_support.index.strftime('%G-%V')
+df_support.index.rename('year-week', inplace=True)
+
+df_support.to_csv('vaccine-support.csv')

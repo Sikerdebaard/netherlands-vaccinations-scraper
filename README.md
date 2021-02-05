@@ -33,3 +33,13 @@ Every column name is an organisation involved in the vaccination process as repo
 `date_of_insertion` technical record, it is unclear what it means exactly but most likely this is the date when the record was added to the dashboard data  
 
 All other columns are names of manufacturers and show the number of vaccine doses that are expected to be delivered in that specific week.
+
+
+
+## vaccine-support.csv 
+`year-week` the iso year and week, date_start_unix is used to generate this value  
+`percentage_in_favor` percentage in favor of vaccination  
+`percentage_already_vaccinated` percentage of population vaccinated  
+`date_start_unix` start date of this rows values  
+`date_end_unix` end date of this rows values    
+`date_of_insertion_unix` technical record, it is unclear what it means exactly but most likely this is the date when the record was added to the dashboard data  
