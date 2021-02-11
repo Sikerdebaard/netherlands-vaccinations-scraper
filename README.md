@@ -2,7 +2,7 @@
 
 
 # netherlands-vaccinations-scraper
-Vaccination data as scraped from https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
+Vaccination data as scraped from ![Corona Dashboard](https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties) and the ![RIVM](https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma).  
 
 ## people-vaccinated.csv
 `date` iso datestamp when the row was published.  
@@ -43,3 +43,11 @@ All other columns are names of manufacturers and show the number of vaccine dose
 `date_start_unix` start date of this rows values  
 `date_end_unix` end date of this rows values    
 `date_of_insertion_unix` technical record, it is unclear what it means exactly but most likely this is the date when the record was added to the dashboard data  
+
+
+## doses-administered-per-manufacturer.csv
+`date` the cumulative numbers up till this date  
+`Dosis` indicates if the numbers are for first-dose administered or second dose administered  
+`Vaccin` indicates the vaccine, e.g. COM = BioNTech/Pfizer, MOD = Moderna  
+
+All other columns represent groups specifically targeted to be vaccinated as reported by the RIVM.  
