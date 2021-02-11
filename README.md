@@ -2,7 +2,7 @@
 
 
 # netherlands-vaccinations-scraper
-Vaccination data as scraped from ![Corona Dashboard](https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties) and the ![RIVM](https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma).  
+Vaccination data as scraped from [Corona Dashboard](https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties) and the [RIVM](https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma).  
 
 ## people-vaccinated.csv
 `date` iso datestamp when the row was published.  
