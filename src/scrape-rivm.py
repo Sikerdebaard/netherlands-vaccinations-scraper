@@ -34,10 +34,15 @@ if outfile.exists():
     df_original = pd.read_csv(outfile, index_col=0)
     df_original.index = pd.to_datetime(df_original.index)
     
+    for col in df_original.columns:
+        if col not in ['Dosis', 'Vaccin']:
+            df_original[col] = df_original[col].astype(pd.Int64Dtype())
+
     if df_doses_per_manufacturer.index[0] in df_original.index:
         df_original = df_original[~(df_original.index == df_doses_per_manufacturer.index[0])]
-    
+
     df_doses_per_manufacturer = pd.concat([df_original, df_doses_per_manufacturer])
 
 df_doses_per_manufacturer.sort_index(inplace=True)
+
 df_doses_per_manufacturer.to_csv(outfile)
