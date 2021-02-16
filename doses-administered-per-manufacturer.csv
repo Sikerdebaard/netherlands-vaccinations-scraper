@@ -1,5 +1,11 @@
-date,Dosis,Vaccin,Directe COVID-19-zorgmedewerkers,Huisartsen,Kleinschalige woonvormen vallend onder huisarts,Verpleeghuismedewerkers/thuiswonende 80-plussers,Verpleeghuizen en zorginstellingen met instellingsarts
-2021-02-07,Eerste dosis,COM,40000,,,294633,151584
-2021-02-07,Eerste dosis,MOD,,13600,4919,,
-2021-02-07,Tweede dosis,COM,40000,,,26409,0
-2021-02-07,Tweede dosis,MOD,,0,0,,
+date,Dosis,Vaccin,Directe COVID-19-zorgmedewerkers,Huisartsen,Kleinschalige woonvormen vallend onder huisarts,Verpleeghuismedewerkers/thuiswonende 80-plussers,Verpleeghuizen en zorginstellingen met instellingsarts,Andere zorgmedewerkers / thuiswonende 80-plussers
+2021-02-07,Eerste dosis,COM,40000,,,294633,151584,
+2021-02-07,Eerste dosis,MOD,,13600,4919,,,
+2021-02-07,Tweede dosis,COM,40000,,,26409,0,
+2021-02-07,Tweede dosis,MOD,,0,0,,,
+2021-02-14,Eerste dosis,COM,40000,,,,152006,
+2021-02-14,Eerste dosis,COM/AZ,,,,,,414776
+2021-02-14,Eerste dosis,MOD,,14300,7911,,,
+2021-02-14,Tweede dosis,COM,40000,,,,16829,
+2021-02-14,Tweede dosis,COM/AZ,,,,,,97616
+2021-02-14,Tweede dosis,MOD,,0,0,,,
