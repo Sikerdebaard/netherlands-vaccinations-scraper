@@ -4,27 +4,17 @@
 # netherlands-vaccinations-scraper
 Vaccination data as scraped from [Corona Dashboard](https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties) and the [RIVM](https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma).  
 
-## people-vaccinated.csv
-`date` iso datestamp when the row was published.  
-`total_vaccinations` total vaccination doses administered.
+# ACTIVE
+NOTE: datasets are moved to deprecated without warning. This is because the Netherlands changes data format quite often, and we can't keep up with conversions.
 
-## estimated-people-vaccinated.csv
-`date` iso datestamp when the row was published  
-`total_vaccinations` total vaccination doses administered as estimated by a mathematical model from the RIVM  
+## vaccine_administered_total.csv
+`date` timestamp of the record
+`estimated` the estimated number of doses administered as reported by the RIVM
+`reported` the actual reported number of doses administered by various instances
+`date_of_insertion_unix` technical record from the coronadashboard
 
-## people-vaccinated-by-instance.csv
-`date` iso datestamp when the row was published.  
-
-Every column name is an organisation involved in the vaccination process as reported by the dashboard. The column names might change over time as we add or remove mappings.  
-
-## estimated-people-vaccinated-by-instance.csv
-`date` iso datestamp when the row was published  
-
-Every column name is an organisation involved in the vaccination process as reported by the mathematical model from the RIVM. The column names might change over time as we add or remove mappings.  
-
-## expected-doses-delivered-within-six-weeks.csv
-`date` iso datestamp when the row was published.  
-`expected_deliveries_within_six_weeks` the number of doses that are expected to be delivered to the Netherlands within six weeks.
+## vaccine_administered_<instance>.csv
+See `vaccine_administered_total.csv`. The difference is that while totals is an aggregation, these files contain the numbers per instance and might include either estimates, reported or combination of both.
 
 ## vaccine-dose-deliveries-by-manufacturer.csv 
 `year-week` the iso year and week, date_start_unix is used to generate this value  
@@ -51,3 +41,27 @@ All other columns are names of manufacturers and show the number of vaccine dose
 `Vaccin` indicates the vaccine, e.g. COM = BioNTech/Pfizer, MOD = Moderna  
 
 All other columns represent groups specifically targeted to be vaccinated as reported by the RIVM.  
+
+# DEPRECATED
+## people-vaccinated.csv
+`date` iso datestamp when the row was published.  
+`total_vaccinations` total vaccination doses administered.
+
+## estimated-people-vaccinated.csv
+`date` iso datestamp when the row was published  
+`total_vaccinations` total vaccination doses administered as estimated by a mathematical model from the RIVM  
+
+## people-vaccinated-by-instance.csv
+`date` iso datestamp when the row was published.  
+
+Every column name is an organisation involved in the vaccination process as reported by the dashboard. The column names might change over time as we add or remove mappings.  
+
+## estimated-people-vaccinated-by-instance.csv
+`date` iso datestamp when the row was published  
+
+Every column name is an organisation involved in the vaccination process as reported by the mathematical model from the RIVM. The column names might change over time as we add or remove mappings.  
+
+## expected-doses-delivered-within-six-weeks.csv
+`date` iso datestamp when the row was published.  
+`expected_deliveries_within_six_weeks` the number of doses that are expected to be delivered to the Netherlands within six weeks.
+

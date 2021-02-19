@@ -25,10 +25,11 @@ jobs:
         sudo apt install tesseract-ocr
     - name: Scrape
       run: |
-        python src/scrape.py
+        #python src/scrape.py
         #python src/scrape-svg.py
         python src/scrape-json.py
         python src/scrape-rivm.py
+        python src/scrape-doses-administered.py
     - name: Commit files
       run: |
           git config --local user.email "thomas@tphil.nl"
