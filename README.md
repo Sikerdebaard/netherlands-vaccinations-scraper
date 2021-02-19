@@ -13,7 +13,7 @@ NOTE: datasets are moved to deprecated without warning. This is because the Neth
 `reported` the actual reported number of doses administered by various instances
 `date_of_insertion_unix` technical record from the coronadashboard
 
-## vaccine_administered_<instance>.csv
+## vaccine_administered_*.csv
 See `vaccine_administered_total.csv`. The difference is that while totals is an aggregation, these files contain the numbers per instance and might include either estimates, reported or combination of both.
 
 ## vaccine-dose-deliveries-by-manufacturer.csv 
