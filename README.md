@@ -42,7 +42,7 @@ All other columns are names of manufacturers and show the number of vaccine dose
 
 All other columns represent groups specifically targeted to be vaccinated as reported by the RIVM.  
 
-# DEPRECATED
+# INACTIVE
 ## people-vaccinated.csv
 `date` iso datestamp when the row was published.  
 `total_vaccinations` total vaccination doses administered.
