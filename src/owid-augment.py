@@ -13,10 +13,11 @@ rename = {
     'total_vaccinations': 'reported',
 }
 df_owid_mod = df_owid[rename.keys()].rename(columns=rename)
+df_owid_mod['estimated'] = df_owid_mod['reported']
 df_merged = pd.concat([df_netherlands, df_owid_mod[df_owid_mod.index < df_netherlands.index[0]]])
 df_merged.sort_index(inplace=True)
 
-df_merged = df_merged[['reported', 'source']]
+df_merged = df_merged[['reported', 'estimated', 'source']]
 
 df_merged.to_csv('augmented/doses_administered_raw.csv')
 
