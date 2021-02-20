@@ -17,8 +17,8 @@ date,reported,estimated,source
 2021-01-27,203450,203450,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
 2021-01-28,215498,215498,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
 2021-01-29,226298,226298,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
-2021-01-30,176286,346790,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
-2021-01-31,248055,343881,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
+2021-01-30,,346790,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
+2021-01-31,248055,,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
 2021-02-01,277275,375908,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
 2021-02-02,303702,416093,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
 2021-02-03,330494,454998,https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties
