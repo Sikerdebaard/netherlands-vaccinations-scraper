@@ -30,6 +30,7 @@ jobs:
         python src/scrape-json.py
         python src/scrape-rivm.py
         python src/scrape-doses-administered.py
+        python src/owid-augment.py
     - name: Commit files
       run: |
           git config --local user.email "thomas@tphil.nl"
