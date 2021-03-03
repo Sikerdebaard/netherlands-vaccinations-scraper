@@ -20,12 +20,10 @@ date,Dosis,Vaccin,Directe COVID-19-zorgmedewerkers,Huisartsen,Kleinschalige woon
 2021-02-21,Tweede dosis,MOD,,0,,,,,,,,,
 2021-02-21,Tweede dosis,MOD/COM,,,0,,,,,,,,
 2021-02-28,Eerste dosis,AZ,,,,,,,63002,,,,
-2021-02-28,Eerste dosis,COM,40000,,,,156477,,,172523,150859,56747,
-2021-02-28,Eerste dosis,COM/AZ,,,,,,,,,,,297919
+2021-02-28,Eerste dosis,COM,40000,,,,,,,172523,150859,56747,
 2021-02-28,Eerste dosis,MOD,,14300,,,,,,,,,
 2021-02-28,Eerste dosis,MOD/COM,,,52930,,,,,,,,
 2021-02-28,Tweede dosis,AZ,,,,,,,0,,,,
-2021-02-28,Tweede dosis,COM,40000,,,,92988,,,214,200,196,
-2021-02-28,Tweede dosis,COM/AZ,,,,,,,,,,,192556
+2021-02-28,Tweede dosis,COM,40000,,,,,,,214,200,196,
 2021-02-28,Tweede dosis,MOD,,3000,,,,,,,,,
 2021-02-28,Tweede dosis,MOD/COM,,,2517,,,,,,,,
