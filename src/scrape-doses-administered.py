@@ -7,6 +7,12 @@ data = requests.get('https://coronadashboard.rijksoverheid.nl/json/NL.json')
 data.raise_for_status()
 
 for k, v in data.json().items():
+    print(k)
+
+    if k == 'vaccine_administered_rate_moving_average':
+        print('Skipping', k)
+        continue
+
     if 'vaccine_administered' in k:
         df = pd.DataFrame(data.json()[k]['values'])
         out_file = Path(f'{k}.csv')
