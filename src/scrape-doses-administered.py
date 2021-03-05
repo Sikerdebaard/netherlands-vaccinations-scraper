@@ -27,4 +27,5 @@ for k, v in data.json().items():
                 df = df_org
 
 
+        df.sort_index(inplace=True)
         df.astype(pd.Int64Dtype()).to_csv(out_file)
