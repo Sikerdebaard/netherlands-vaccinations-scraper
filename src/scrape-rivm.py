@@ -18,7 +18,7 @@ for h2 in soup.find_all('h2'):
         break  # break loop, no need to continue
 
 table = soup.find_all('table')[0]
-[el.decompose() for el in table.find_all('span')]  # remove span tags in the table, they mess up pandas read_html
+#[el.decompose() for el in table.find_all('span')]  # remove span tags in the table, they mess up pandas read_html
 
 
 df_doses_per_manufacturer = pd.read_html(str(table), thousands='.', decimal=',')[0]
