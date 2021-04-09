@@ -28,7 +28,7 @@ jobs:
         #python src/scrape.py
         #python src/scrape-svg.py
         python src/scrape-json.py
-        python src/scrape-rivm.py
+        #python src/scrape-rivm.py
         python src/scrape-doses-administered.py
         python src/owid-augment.py
     - name: Commit files
