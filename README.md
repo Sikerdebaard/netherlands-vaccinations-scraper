@@ -7,6 +7,12 @@ Vaccination data as scraped from [Corona Dashboard](https://coronadashboard.rijk
 # ACTIVE
 NOTE: datasets are moved to deprecated without warning. This is because the Netherlands changes data format quite often, and we can't keep up with conversions.
 
+## booster-shots-immune-disorders.csv
+Scraped from [RIVM](https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma)
+`date` timestamp of the record
+`week` weeknumber of the record
+`cumulative_number_of_booster1_shots` The reported number of people that have received the booster 1 shot.
+
 ## vaccine_administered_total.csv
 `date` timestamp of the record
 `estimated` the estimated number of doses administered as reported by the RIVM
